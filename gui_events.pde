@@ -46,19 +46,7 @@ public void Drawing(int theValue) {
 
 public void Paint_1(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    ramps.write("M280 P0 S0 \r"); //lift brush
-    blockingDelay(500);
-    ramps.write("G1 X70 Y220 F"+feedrate+" \r"); //go to paint pot position
-    blockingDelay(500);
-    ramps.write("M280 P0 S180 \r"); //lower brush
-    blockingDelay(1000);
-    ramps.write("M280 P0 S100 \r"); //lift brush a bit
-    blockingDelay(1000);
-    ramps.write("G1 X40 Y220 F500 \r"); //wipe slowly to one side
-    blockingDelay(2000);
-    ramps.write("M280 P0 S0 \r"); //lift brush all the way
-    blockingDelay(500);
-    ramps.write("G1 X20 Y221 F"+feedrate+" \r"); //reset the feed rate
+    penDip1();
   }
 }
 

@@ -43,7 +43,7 @@ void mouseDragged() {
 //println(str(real_z_pos));
    
   if(floating){
-    real_z_pos = 180;  
+    real_z_pos = 120;  
   } else {
     real_z_pos = 180;
   }

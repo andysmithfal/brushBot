@@ -34,3 +34,21 @@ void initWorkArea(){
  background(0xed,0xa2,0x23);
  rect(10,10,750,750); 
 }
+
+void penDip1(){
+    ramps.write("M280 P0 S0 \r"); //lift brush
+    blockingDelay(500);
+    ramps.write("G1 X70 Y220 F"+feedrate+" \r"); //go to paint pot position
+    blockingDelay(500);
+    ramps.write("M280 P0 S180 \r"); //lower brush
+    blockingDelay(1000);
+    ramps.write("G2 X70 Y220 I5 J0 F2000\r"); //do a circle
+    blockingDelay(3000);
+    ramps.write("M280 P0 S100 \r"); //lift brush a bit
+    blockingDelay(1000);
+    ramps.write("G1 X40 Y220 F500 \r"); //wipe slowly to one side
+    blockingDelay(2000);
+    ramps.write("M280 P0 S0 \r"); //lift brush all the way
+    blockingDelay(500);
+    ramps.write("G1 X20 Y221 F"+feedrate+" \r"); //reset the feed rate
+}
