@@ -18,6 +18,12 @@ public void Stop(int theValue) {
   }
 }
 
+public void Clear(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+    initWorkArea();
+  }
+}
+
 public void record(int theValue) {
   if(frameCount >1 && !conf_run_offline){
     allowRecord = true;
@@ -35,6 +41,58 @@ public void end(int theValue) {
     output.flush(); // Writes the remaining data to the file
     output.close(); // Finishes the file
     //exit(); // Stops the program
+  }
+}
+
+public void drop_tool(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+
+    changeTool(currentTool,false);
+    currentTool = 0;
+    
+  }
+}
+
+public void tool_1(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+
+    switchTool(1);
+    
+  }
+}
+
+public void tool_2(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+     switchTool(2);
+   
+  }
+}
+
+public void tool_3(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+     switchTool(3);
+   
+  }
+}
+
+public void tool_4(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+     switchTool(4);
+   
+  }
+}
+
+public void tool_5(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+     switchTool(5);
+   
+  }
+}
+
+public void tool_6(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+     switchTool(6);
+   
   }
 }
 

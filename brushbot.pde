@@ -7,6 +7,7 @@
 
 import controlP5.*;
 ControlP5 cp5;
+DropdownList toolDropdown;
 
 import codeanticode.tablet.*;
 
@@ -23,10 +24,10 @@ int val;        // Data received from the serial port
 
 int feedrate = 40000;
 
-int x_min_val = 50;
-int x_max_val = 200;
-int y_min_val = 50;
-int y_max_val = 200;
+int x_min_val = 40;
+int x_max_val = 220;
+int y_min_val = 125;
+int y_max_val = 305;
 
 
 int pixelGrid_x = 10;
@@ -34,11 +35,13 @@ int pixelGrid_y = 10;
 int pixelGrid_size = 750;
 
 int lastTX = 0;
+int currentTool = 0;
 
 boolean inGrid = false;
 boolean allowMove = false;
 boolean allowRecord = false;
 boolean floating = true;
+boolean changingTool = false;
 
 float real_z_pos;
 color onColor = color(204, 153, 0);
@@ -56,7 +59,7 @@ void setup(){
   
   //connect to serial and init machine
   if(!conf_run_offline){
-    ramps = new Serial(this, conf_serial_port, 115200);
+    ramps = new Serial(this, findSerial(ramps.list()), 115200);
     //put in a delay to let the marlin software reset
     blockingDelay(2000);
     //send g code to init
@@ -66,6 +69,7 @@ void setup(){
     ramps.write("G21 \r"); //set units to mm
     ramps.write("G90 \r"); //absolute positioning
     ramps.write("G1 X0 Y0 F"+str(feedrate)+"\r"); //set feedrate
+    ramps.write("G1 X0 Y25 \r"); //set feedrate
   }  
 
   //init the gui  
@@ -116,14 +120,69 @@ void setup(){
    .setCaptionLabel("Floating")
    ;
    
-   cp5.addButton("Paint_1")
+   cp5.addButton("Clear")
    .setValue(0)
    .setPosition(780,(7*50)-40)
    .setSize(50,20)
+   .setCaptionLabel("CLEAR SCR")
+   ;
+   
+   cp5.addButton("Paint_1")
+   .setValue(0)
+   .setPosition(780,(8*50)-40)
+   .setSize(50,20)
    .setCaptionLabel("Paint Pot 1")
    ;
-
-
+   
+   //column 2
+   cp5.addButton("tool_1")
+   .setValue(0)
+   .setPosition(850,(1*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("TOOL 1")
+   ;
+   
+   cp5.addButton("tool_2")
+   .setValue(0)
+   .setPosition(850,(2*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("TOOL 2")
+   ;
+   
+   cp5.addButton("tool_3")
+   .setValue(0)
+   .setPosition(850,(3*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("TOOL 3")
+   ;
+   
+   cp5.addButton("tool_4")
+   .setValue(0)
+   .setPosition(850,(4*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("TOOL 4")
+   ;
+  
+   cp5.addButton("tool_5")
+   .setValue(0)
+   .setPosition(850,(5*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("TOOL 5")
+   ;
+   
+   cp5.addButton("tool_6")
+   .setValue(0)
+   .setPosition(850,(6*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("TOOL 6")
+   ;
+   
+   cp5.addButton("drop_tool")
+   .setValue(0)
+   .setPosition(850,(6*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("DROP TOOL")
+   ;
 
    cp5.addTextfield("manualSerialCmd")
    .setPosition(780,700)
@@ -131,8 +190,7 @@ void setup(){
    .setFont(font_fs)
    .setAutoClear(false)
    ;
-
-     
+  
   // Create a new file in the sketch directory
   
   String str_sec = str(second());
@@ -155,7 +213,10 @@ void draw() {
    // Instead of mousePressed, one can use the Tablet.isMovement() method, which
   // returns true when changes not only in position but also in pressure or tilt
   // are detected in the tablet. 
- 
+  noStroke();
+  fill(0xed,0xa2,0x23);
+  rect(770,0,(conf_screen_x-770),conf_screen_y);
+  
 }
 
 

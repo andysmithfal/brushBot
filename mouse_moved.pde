@@ -1,18 +1,24 @@
 void mouseDragged() {
-  //ignore mouse move events in quick succession
-  if(millis() < lastTX+5){
-    //println("Skipping");
-    return;
-  }
-  lastTX = millis();
-  
-  //println("mouse moved at "+millis()+" last was "+lastTX);
   //if the mouse pointer is in the white square
   if (mouseX >= 10 && mouseX <=760 && mouseY>=10 && mouseY<=760){  
    inGrid = true; 
    }else{
      inGrid = false;
    }  
+   
+  if(!floating && inGrid){
+    //draw to screen
+    noSmooth();
+    noStroke();
+    fill(0,0,0);
+    ellipse(mouseX,mouseY,5,5);
+  }
+  //ignore mouse move events in quick succession
+  if(millis() < lastTX+5){
+    //println("Skipping");
+    return;
+  }
+  lastTX = millis();
    
   //calaculate the mouse pixel position 0 - pixelGrid_size in x and y
   
@@ -34,6 +40,10 @@ void mouseDragged() {
     
   float real_x_pos = (mouse_x_pos * x_pix_val) + x_min_val;
   float real_y_pos = (mouse_y_pos * y_pix_val) + y_min_val;
+  
+  print(real_x_pos);
+  print("    ");
+  println(real_y_pos);
    
 //  float pressure = tablet.getPressure();
 //  real_z_pos = 100;
@@ -54,7 +64,7 @@ void mouseDragged() {
   
  
 void mouseReleased() {
-  if(!conf_run_offline){
+  if(!conf_run_offline && !changingTool){
     ramps.write("M280 P0 S100\r");
   } 
 }

@@ -1,6 +1,6 @@
 void moveMachine(float x, float y,float z){
   if(conf_run_offline) return; //do nothing if we're running offline
-  
+  println("moving machine");
   //println(str(int(z)));
    if (allowMove == true && inGrid == true){   
     ramps.write("G1 X" + nf(x,3,2) + " Y" + nf(y,3,2) + "\r");
@@ -15,6 +15,18 @@ void moveMachine(float x, float y,float z){
  //blockingDelay(5);
 }
 
+String findSerial(String[] ports){
+  String port = "no port!";
+  for(String thisPort : ports){
+    String[] m = match(thisPort.toLowerCase(), "usb");
+    String[] c = match(thisPort.toLowerCase(), "com([0-9]{1,2})");
+    if(m != null || c != null){
+     port = thisPort;
+     break;
+    }
+  }
+  return port;
+}
 
 void blockingDelay(int ms){
   try{    
@@ -32,6 +44,8 @@ void setFloating(){
 
 void initWorkArea(){
  background(0xed,0xa2,0x23);
+ stroke(1);
+ fill(255,255,255);
  rect(10,10,750,750); 
 }
 
@@ -51,4 +65,45 @@ void penDip1(){
     ramps.write("M280 P0 S0 \r"); //lift brush all the way
     blockingDelay(500);
     ramps.write("G1 X20 Y221 F"+feedrate+" \r"); //reset the feed rate
+}
+
+                //tool num,     true = pick up    false = put down
+                
+void switchTool(int tool){
+   if(currentTool == 0){
+     changeTool(tool,true);
+     currentTool = tool;
+   } else {
+     changeTool(currentTool,false);
+     changeTool(tool,true);
+     currentTool = tool;
+   } 
+}
+
+void changeTool(int tool, boolean direction){
+  int x_offset = 10+(tool*35);
+  
+  int speed = 4000;
+  ramps.write("G1 X0 Y40 \r");
+  ramps.write("G1 X"+x_offset+" Y40\r");
+  if(direction == true){
+    //pick up tool
+    ramps.write("M280 P0 S180 \r");
+    blockingDelay(250+(350*tool));
+    ramps.write("G1 X"+x_offset+" Y8 F"+speed+" \r");
+    blockingDelay(750*tool);
+    ramps.write("M280 P0 S0 \r");
+  } else {
+    //put down tool
+    ramps.write("M280 P0 S0 \r");
+    blockingDelay(250+(350*tool));
+    ramps.write("G1 X"+x_offset+" Y8  F"+speed+" \r");
+    blockingDelay(750*tool);
+    ramps.write("M280 P0 S180 \r");    
+  }
+  blockingDelay(750+(350*tool));
+  ramps.write("G1 X"+x_offset+" Y40 \r");
+  ramps.write("G1 X"+x_min_val+" Y"+y_min_val+" F"+feedrate+"\r");
+  blockingDelay(750+(350*tool));
+
 }
