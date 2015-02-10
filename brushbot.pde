@@ -41,7 +41,10 @@ boolean inGrid = false;
 boolean allowMove = false;
 boolean allowRecord = false;
 boolean floating = true;
-boolean changingTool = false;
+boolean changingTool = false; 
+
+ArrayList<String> gcodebuffer = new ArrayList<String>();
+boolean serial_wait = false;
 
 float real_z_pos;
 color onColor = color(204, 153, 0);
@@ -60,16 +63,17 @@ void setup(){
   //connect to serial and init machine
   if(!conf_run_offline){
     ramps = new Serial(this, findSerial(ramps.list()), 115200);
+    ramps.bufferUntil(10); 
     //put in a delay to let the marlin software reset
     blockingDelay(2000);
     //send g code to init
       
-    ramps.write("M280 P0 S0 \r"); //set z-axis to 0 degrees (pen up)
-    ramps.write("G28 X0 Y0 \r");  //home machine
-    ramps.write("G21 \r"); //set units to mm
-    ramps.write("G90 \r"); //absolute positioning
-    ramps.write("G1 X0 Y0 F"+str(feedrate)+"\r"); //set feedrate
-    ramps.write("G1 X0 Y25 \r"); //set feedrate
+    addToBuffer("M280 P0 S0 \r"); //set z-axis to 0 degrees (pen up)
+    addToBuffer("G28 X0 Y0 \r");  //home machine
+    addToBuffer("G21 \r"); //set units to mm
+    addToBuffer("G90 \r"); //absolute positioning
+    addToBuffer("G1 X0 Y0 F"+str(feedrate)+"\r"); //set feedrate
+    addToBuffer("G1 X0 Y25 \r"); //set feedrate
   }  
 
   //init the gui  
@@ -217,6 +221,8 @@ void draw() {
   fill(0xed,0xa2,0x23);
   rect(770,0,(conf_screen_x-770),conf_screen_y);
   
+  processBuffer();
+  displayStatus(930, 24);
 }
 
 

@@ -14,7 +14,7 @@ void mouseDragged() {
     ellipse(mouseX,mouseY,5,5);
   }
   //ignore mouse move events in quick succession
-  if(millis() < lastTX+5){
+  if(millis() < lastTX+20){
     //println("Skipping");
     return;
   }
@@ -65,7 +65,7 @@ void mouseDragged() {
  
 void mouseReleased() {
   if(!conf_run_offline && !changingTool){
-    ramps.write("M280 P0 S100\r");
+    addToBuffer("M280 P0 S100\r");
   } 
 }
 

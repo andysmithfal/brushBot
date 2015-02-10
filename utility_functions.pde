@@ -3,8 +3,8 @@ void moveMachine(float x, float y,float z){
   println("moving machine");
   //println(str(int(z)));
    if (allowMove == true && inGrid == true){   
-    ramps.write("G1 X" + nf(x,3,2) + " Y" + nf(y,3,2) + "\r");
-    ramps.write("M280 P0 S" + nf(z,3,2) +"\r");    
+    addToBuffer("G1 X" + nf(x,3,2) + " Y" + nf(y,3,2) + "\r");
+    addToBuffer("M280 P0 S" + nf(z,3,2) +"\r");    
     
     if (allowMove == true && allowRecord == true && inGrid == true){
     output.println("G1 X" + str(x) + " Y" + str(y) + "\r");
@@ -50,21 +50,21 @@ void initWorkArea(){
 }
 
 void penDip1(){
-    ramps.write("M280 P0 S0 \r"); //lift brush
+    addToBuffer("M280 P0 S0 \r"); //lift brush
     blockingDelay(500);
-    ramps.write("G1 X70 Y220 F"+feedrate+" \r"); //go to paint pot position
+    addToBuffer("G1 X70 Y220 F"+feedrate+" \r"); //go to paint pot position
     blockingDelay(500);
-    ramps.write("M280 P0 S180 \r"); //lower brush
+    addToBuffer("M280 P0 S180 \r"); //lower brush
     blockingDelay(1000);
-    ramps.write("G2 X70 Y220 I5 J0 F2000\r"); //do a circle
+    addToBuffer("G2 X70 Y220 I5 J0 F2000\r"); //do a circle
     blockingDelay(3000);
-    ramps.write("M280 P0 S100 \r"); //lift brush a bit
+    addToBuffer("M280 P0 S100 \r"); //lift brush a bit
     blockingDelay(1000);
-    ramps.write("G1 X40 Y220 F500 \r"); //wipe slowly to one side
+    addToBuffer("G1 X40 Y220 F500 \r"); //wipe slowly to one side
     blockingDelay(2000);
-    ramps.write("M280 P0 S0 \r"); //lift brush all the way
+    addToBuffer("M280 P0 S0 \r"); //lift brush all the way
     blockingDelay(500);
-    ramps.write("G1 X20 Y221 F"+feedrate+" \r"); //reset the feed rate
+    addToBuffer("G1 X20 Y221 F"+feedrate+" \r"); //reset the feed rate
 }
 
                 //tool num,     true = pick up    false = put down
@@ -84,26 +84,26 @@ void changeTool(int tool, boolean direction){
   int x_offset = 10+(tool*35);
   
   int speed = 4000;
-  ramps.write("G1 X0 Y40 \r");
-  ramps.write("G1 X"+x_offset+" Y40\r");
+  addToBuffer("G1 X0 Y40 \r");
+  addToBuffer("G1 X"+x_offset+" Y40\r");
   if(direction == true){
     //pick up tool
-    ramps.write("M280 P0 S180 \r");
-    blockingDelay(250+(350*tool));
-    ramps.write("G1 X"+x_offset+" Y8 F"+speed+" \r");
-    blockingDelay(750*tool);
-    ramps.write("M280 P0 S0 \r");
+    addToBuffer("M280 P0 S170 \r");
+    addToBuffer("D"+(250+350*tool));
+    addToBuffer("G1 X"+x_offset+" Y10 F"+speed+" \r");
+    addToBuffer("D"+(900*tool));
+    addToBuffer("M280 P0 S0 \r");
   } else {
     //put down tool
-    ramps.write("M280 P0 S0 \r");
-    blockingDelay(250+(350*tool));
-    ramps.write("G1 X"+x_offset+" Y8  F"+speed+" \r");
-    blockingDelay(750*tool);
-    ramps.write("M280 P0 S180 \r");    
+    addToBuffer("M280 P0 S0 \r");
+    addToBuffer("D"+(250+(350*tool)));
+    addToBuffer("G1 X"+x_offset+" Y10  F"+speed+" \r");
+    addToBuffer("D"+(900*tool));
+    addToBuffer("M280 P0 S180 \r");    
   }
-  blockingDelay(750+(350*tool));
-  ramps.write("G1 X"+x_offset+" Y40 \r");
-  ramps.write("G1 X"+x_min_val+" Y"+y_min_val+" F"+feedrate+"\r");
-  blockingDelay(750+(350*tool));
+  addToBuffer("D"+(750+(350*tool)));
+  addToBuffer("G1 X"+x_offset+" Y40 \r");
+  addToBuffer("G1 X"+x_min_val+" Y"+y_min_val+" F"+feedrate+"\r");
+  addToBuffer("D"+(750+(350*tool)));
 
 }

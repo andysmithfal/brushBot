@@ -2,7 +2,7 @@
 
 public void Home(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    ramps.write("G28 X0 Y0 \r");
+    addToBuffer("G28 X0 Y0 \r");
   }
 } 
 
@@ -111,6 +111,6 @@ public void Paint_1(int theValue) {
 public void manualSerialCmd(String theText) {
   // automatically receives results from controller input
   println("Sending: "+theText);
-  if(!conf_run_offline) ramps.write(theText+"\r");
+  if(!conf_run_offline) addToBuffer(theText+"\r");
 }
 
