@@ -2,12 +2,7 @@
   boolean conf_run_offline = true;
 
 // serial/com port address 
-  //mac
-  String conf_serial_port = "/dev/tty.usbmodem1431";
-  //linux
-  //String conf_serial_port = "/dev/ttyUSB0";
-  //windows 
-  //String conf_serial_port = "COM1";
+    //this is all automatic now
 
 // screen resolution
 

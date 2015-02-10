@@ -30,22 +30,3 @@ void addToBuffer(String gcode){
 void addDelayToBuffer(int del){
   gcodebuffer.add("D "+del);
 }
-
-
-void displayStatus(int x, int y){
- int textSize = 16;
- int bufferCount = gcodebuffer.size();
- textSize(textSize);
- fill(0);
- text("Buffer: "+bufferCount, x, y);
- 
- String tool; 
- 
- if(currentTool == 0){
-   tool = "No Tool";
- } else {
-   tool = str(currentTool);
- } 
- 
- text("Current Tool: "+tool, x, y+textSize + 5, textSize);
-}

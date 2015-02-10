@@ -131,12 +131,7 @@ void setup(){
    .setCaptionLabel("CLEAR SCR")
    ;
    
-   cp5.addButton("Paint_1")
-   .setValue(0)
-   .setPosition(780,(8*50)-40)
-   .setSize(50,20)
-   .setCaptionLabel("Paint Pot 1")
-   ;
+
    
    //column 2
    cp5.addButton("tool_1")
@@ -187,6 +182,50 @@ void setup(){
    .setSize(50,20)
    .setCaptionLabel("DROP TOOL")
    ;
+   
+   //column 3 
+   cp5.addButton("Paint_1")
+   .setValue(0)
+   .setPosition(920,(1*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Paint 1")
+   ;
+   
+   cp5.addButton("Paint_2")
+   .setValue(0)
+   .setPosition(920,(2*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Paint 2")
+   ;
+   
+   cp5.addButton("Paint_3")
+   .setValue(0)
+   .setPosition(920,(3*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Paint 3")
+   ;
+   
+   cp5.addButton("Paint_4")
+   .setValue(0)
+   .setPosition(920,(4*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Paint 4")
+   ;
+   
+   cp5.addButton("Paint_5")
+   .setValue(0)
+   .setPosition(920,(5*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Paint 5")
+   ;
+   
+   
+   cp5.addButton("Wash")
+   .setValue(0)
+   .setPosition(920,(6*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("WASH")
+   ;
 
    cp5.addTextfield("manualSerialCmd")
    .setPosition(780,700)
@@ -222,7 +261,7 @@ void draw() {
   rect(770,0,(conf_screen_x-770),conf_screen_y);
   
   processBuffer();
-  displayStatus(930, 24);
+  displayStatus(780, 600);
 }
 
 
