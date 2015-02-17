@@ -1,23 +1,30 @@
-void penDip1(){
-    addToBuffer("M280 P0 S0 \r"); //lift brush
-    blockingDelay(500);
-    addToBuffer("G1 X70 Y220 F"+feedrate+" \r"); //go to paint pot position
-    blockingDelay(500);
-    addToBuffer("M280 P0 S180 \r"); //lower brush
-    blockingDelay(1000);
-    addToBuffer("G2 X70 Y220 I5 J0 F2000\r"); //do a circle
-    blockingDelay(3000);
-    addToBuffer("M280 P0 S100 \r"); //lift brush a bit
-    blockingDelay(1000);
-    addToBuffer("G1 X40 Y220 F500 \r"); //wipe slowly to one side
-    blockingDelay(2000);
-    addToBuffer("M280 P0 S0 \r"); //lift brush all the way
-    blockingDelay(500);
-    addToBuffer("G1 X20 Y221 F"+feedrate+" \r"); //reset the feed rate
+void penDip(int pot){
+  int xoffset = (50*pot)-50;
+  //to the pot
+  addToBuffer("G1 X"+xoffset+" Y95\r");
+  //down
+  addToBuffer("G4 P1 \r");
+  addToBuffer("M280 P0 S180\r");
+  addToBuffer("G4 P750\r");
+  //round
+  for(int i = 0; i < 6; i++){
+    addToBuffer("G2 X"+xoffset+" Y95 I5 J0 F40000\r");
+  }
+  //up a bit
+  addToBuffer("G4 P1 \r");
+  addToBuffer("M280 P0 S105\r");
+  addToBuffer("G4 P750\r");
+  //wipe 
+  addToBuffer("G1 X"+xoffset+" Y115 F500\r");
+  //up all the way
+  addToBuffer("G4 P1 \r");
+  addToBuffer("M280 P0 S0\r");
+  addToBuffer("G4 P750\r"); 
+  //finish 
+  addToBuffer("G1 X"+xoffset+" Y120 F40000\r"); 
+  
 }
-
-                //tool num,     true = pick up    false = put down
-                
+           
 void switchTool(int tool){
    if(currentTool == 0){
      changeTool(tool,true);
@@ -37,18 +44,18 @@ void changeTool(int tool, boolean direction){
   addToBuffer("G1 X"+x_offset+" Y40\r");
   if(direction == true){
     //pick up tool
-    addToBuffer("M280 P0 S170 \r");
+    addToBuffer("M280 P0 S165 \r");
     addToBuffer("D"+(250+350*tool));
-    addToBuffer("G1 X"+x_offset+" Y10 F"+speed+" \r");
+    addToBuffer("G1 X"+x_offset+" Y9 F"+speed+" \r");
     addToBuffer("D"+(900*tool));
     addToBuffer("M280 P0 S0 \r");
   } else {
     //put down tool
     addToBuffer("M280 P0 S0 \r");
     addToBuffer("D"+(250+(350*tool)));
-    addToBuffer("G1 X"+x_offset+" Y10  F"+speed+" \r");
+    addToBuffer("G1 X"+x_offset+" Y9  F"+speed+" \r");
     addToBuffer("D"+(900*tool));
-    addToBuffer("M280 P0 S180 \r");    
+    addToBuffer("M280 P0 S170 \r");    
   }
   addToBuffer("D"+(750+(350*tool)));
   addToBuffer("G1 X"+x_offset+" Y40 \r");

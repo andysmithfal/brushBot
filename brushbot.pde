@@ -35,6 +35,8 @@ int pixelGrid_y = 10;
 int pixelGrid_size = 750;
 
 int lastTX = 0;
+int lastX = 0; 
+int lastY = 0;
 int currentTool = 0;
 
 boolean inGrid = false;
@@ -178,7 +180,7 @@ void setup(){
    
    cp5.addButton("drop_tool")
    .setValue(0)
-   .setPosition(850,(6*50)-40)
+   .setPosition(850,(7*50)-40)
    .setSize(50,20)
    .setCaptionLabel("DROP TOOL")
    ;
@@ -220,7 +222,7 @@ void setup(){
    ;
    
    
-   cp5.addButton("Wash")
+   cp5.addButton("Paint_6")
    .setValue(0)
    .setPosition(920,(6*50)-40)
    .setSize(50,20)

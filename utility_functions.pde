@@ -8,6 +8,7 @@ String findSerial(String[] ports){
      break;
     }
   }
+  println("connecting to "+port);
   return port;
 }
 

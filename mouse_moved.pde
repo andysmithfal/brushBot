@@ -14,11 +14,10 @@ void mouseDragged() {
     ellipse(mouseX,mouseY,5,5);
   }
   //ignore mouse move events in quick succession
-  if(millis() < lastTX+20){
+  if(millis() < lastTX+50){
     //println("Skipping");
     return;
   }
-  lastTX = millis();
    
   //calaculate the mouse pixel position 0 - pixelGrid_size in x and y
   
@@ -40,7 +39,10 @@ void mouseDragged() {
     
   float real_x_pos = (mouse_x_pos * x_pix_val) + x_min_val;
   float real_y_pos = (mouse_y_pos * y_pix_val) + y_min_val;
-  
+
+  //skip duplicate gcode
+  if(int(real_x_pos) == lastX && int(real_y_pos) == lastY) return;
+
   print(real_x_pos);
   print("    ");
   println(real_y_pos);
@@ -58,6 +60,11 @@ void mouseDragged() {
     real_z_pos = 180;
   }
   
+  
+  lastX = int(real_x_pos);
+  lastY = int(real_y_pos);
+  lastTX = millis();
+
   moveMachine(real_x_pos,real_y_pos,real_z_pos);
  
  }

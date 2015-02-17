@@ -104,7 +104,38 @@ public void Drawing(int theValue) {
 
 public void Paint_1(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    penDip1();
+    penDip(1);
+  }
+}
+
+public void Paint_2(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+    penDip(2);
+  }
+}
+
+public void Paint_3(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+    penDip(3);
+  }
+}
+
+
+public void Paint_4(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+    penDip(4);
+  }
+}
+
+public void Paint_5(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+    penDip(5);
+  }
+}
+
+public void Paint_6(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+    penDip(6);
   }
 }
 
