@@ -13,7 +13,7 @@ import codeanticode.tablet.*;
 
 Tablet tablet;
 
-//float penPressure = 0;
+float penPressure = 0;
 
 PrintWriter output;
 
@@ -60,7 +60,7 @@ void setup(){
   size(conf_screen_x, conf_screen_y);
   
   //define gfx tablet object
-    //tablet = new Tablet(this); 
+    tablet = new Tablet(this); 
   
   //connect to serial and init machine
   if(!conf_run_offline){

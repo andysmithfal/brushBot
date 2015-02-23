@@ -5,8 +5,5 @@ void keyPressed() {
    case 'd': 
     setFloating();
     break; 
-   case '1':
-    penDip1();
-    break;
   }
 }
