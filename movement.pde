@@ -71,13 +71,7 @@ void xyInput(){
      inGrid = false;
    }  
    
-  if(!floating && inGrid){
-    //draw to screen
-    noSmooth();
-    noStroke();
-    fill(0,0,0);
-    ellipse(mouseX,mouseY,5,5);
-  }
+
   //ignore mouse move events in quick succession
   if(millis() < lastTX+50){
     //println("Skipping");
@@ -117,6 +111,13 @@ void xyInput(){
     real_z_pos = 80;
     if (pressure > 0.1){
        real_z_pos = real_z_pos + (pressure * 90);
+         if(inGrid){
+            //draw to screen
+            noSmooth();
+            noStroke();
+            fill(0,0,0);
+            ellipse(mouseX,mouseY,5,5);
+          }
     }
     if(real_z_pos > 180) real_z_pos = 180;
     println(str(pressure)+"  >>  "+str(real_z_pos));
