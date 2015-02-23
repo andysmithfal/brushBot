@@ -144,6 +144,12 @@ public void Paint_6(int theValue) {
   }
 }
 
+public void Replay(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+    selectInput("Select a file to replay:", "replayFile");
+  }
+}
+
 public void manualSerialCmd(String theText) {
   // automatically receives results from controller input
   println("Sending: "+theText);

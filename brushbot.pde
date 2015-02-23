@@ -135,7 +135,12 @@ void setup(){
    .setCaptionLabel("CLEAR SCR")
    ;
    
-
+   cp5.addButton("Replay")
+   .setValue(0)
+   .setPosition(780,(8*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Replay")
+   ;
    
    //column 2
    cp5.addButton("tool_1")
