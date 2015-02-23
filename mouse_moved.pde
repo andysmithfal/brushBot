@@ -3,9 +3,8 @@ void mouseMoved() {
 }
 
 void mouseDragged() {
-  xyInput();
- 
- }
+  xyInput(); 
+}
   
  
 void mouseReleased() {

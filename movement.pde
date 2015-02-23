@@ -145,9 +145,9 @@ void moveMachine(float x, float y, float z){
     addToBuffer("G1 X" + nf(x,3,2) + " Y" + nf(y,3,2) + "\r");
     addToBuffer("M280 P0 S" + nf(z,3,2) +"\r");    
     
-    if (allowMove == true && allowRecord == true && inGrid == true){
-    output.println("G1 X" + str(x) + " Y" + str(y) + "\r");
-    output.println("M280 P0 S" + nf(z,3,2) +"\r");
-    }
+//    if (allowMove == true && allowRecord == true && inGrid == true){
+//    output.println("G1 X" + str(x) + " Y" + str(y) + "\r");
+//    output.println("M280 P0 S" + nf(z,3,2) +"\r");
+//    }
  }
 }

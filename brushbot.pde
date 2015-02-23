@@ -15,7 +15,8 @@ Tablet tablet;
 
 float penPressure = 0;
 
-PrintWriter output;
+PrintWriter recording;
+PrintWriter jsonrecording;
 
 import processing.serial.*;
 
@@ -38,6 +39,7 @@ int lastTX = 0;
 int lastX = 0; 
 int lastY = 0;
 int currentTool = 0;
+int currentPaint = 1;
 
 boolean inGrid = false;
 boolean allowMove = false;
@@ -235,18 +237,6 @@ void setup(){
    .setFont(font_fs)
    .setAutoClear(false)
    ;
-  
-  // Create a new file in the sketch directory
-  
-  String str_sec = str(second());
-  String str_min  = str(minute());
-  String str_hr = str(hour());
-  String str_day = str(day());
-  String str_mth = str(month());
-  String str_yr = str(year());
-  
-  output = createWriter(str_day + "-" + str_mth + "-" + str_yr + "_" + str_hr + "-"+ str_min+ "-" + str_sec + ".txt"); 
-  
   
   initWorkArea();
 }

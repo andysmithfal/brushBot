@@ -8,7 +8,7 @@ void processBuffer(){
   if(!serial_wait && gcodebuffer.size() > 0){
     String thisLine = gcodebuffer.get(0);
     gcodebuffer.remove(0);
-    
+    if (allowRecord) recording.println(thisLine);
     //we look for a 'custom' GCode - Dnnnnn - this delays the machine 
     //by the specified number of milliseconds 
     String[] delayTest = match(thisLine, "D([0-9]{1,5})"); 
@@ -18,6 +18,7 @@ void processBuffer(){
       blockingDelay(delay);
     } else {
       serial_wait = true;
+
       ramps.write(thisLine);
     }
   }
@@ -25,6 +26,7 @@ void processBuffer(){
 
 void addToBuffer(String gcode){
   gcodebuffer.add(gcode);
+  
 }
 
 void addDelayToBuffer(int del){

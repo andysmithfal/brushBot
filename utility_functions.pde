@@ -51,4 +51,5 @@ void displayStatus(int x, int y){
  } 
  
  text("Current Tool: "+tool, x, y+textSize + 5, textSize);
+ text("Current Paint: "+currentPaint, x, y+(textSize + 5)*2, textSize);
 }

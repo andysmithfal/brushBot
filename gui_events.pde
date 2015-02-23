@@ -26,20 +26,19 @@ public void Clear(int theValue) {
 
 public void record(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    allowRecord = true;
+    startRecording();
   }
 }
 
 public void pause(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    allowRecord = false;
+    //allowRecord = false;
   }
 }
 
 public void end(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    output.flush(); // Writes the remaining data to the file
-    output.close(); // Finishes the file
+    stopRecording();
     //exit(); // Stops the program
   }
 }
@@ -99,6 +98,12 @@ public void tool_6(int theValue) {
 public void Drawing(int theValue) {
   if(frameCount >1){
     setFloating();
+  }
+}
+
+public void Paint(int theValue) {
+  if(frameCount >1 && !conf_run_offline){
+    penDip(currentPaint);
   }
 }
 
