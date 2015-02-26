@@ -13,9 +13,9 @@ void penDip(int pot){
   //up a bit
   addToBuffer("G4 P1 \r");
   addToBuffer("M280 P0 S105\r");
-  addToBuffer("G4 P750\r");
+  //addToBuffer("G4 P750\r");
   //wipe 
-  addToBuffer("G1 X"+xoffset+" Y115 F500\r");
+  //addToBuffer("G1 X"+xoffset+" Y115 F500\r");
   //up all the way
   addToBuffer("G4 P1 \r");
   addToBuffer("M280 P0 S0\r");

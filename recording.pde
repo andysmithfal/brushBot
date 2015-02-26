@@ -28,7 +28,7 @@ void replayFile(File selection) {
     addFileToBuffer(selection.getAbsolutePath());   
   }
 }
-
+ 
 void addFileToBuffer(String file){
   String[] lines = loadStrings(file);
   for(int i = 0; i < lines.length; i++){
