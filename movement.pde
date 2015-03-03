@@ -122,7 +122,7 @@ void xyInput(){
     if(real_z_pos > 180) real_z_pos = 180;
     println(str(pressure)+"  >>  "+str(real_z_pos));
   } else {
-    real_z_pos = 100; 
+    real_z_pos = 120; 
   }
   
 //  if(floating){
