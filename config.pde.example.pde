@@ -8,3 +8,6 @@
 
   int conf_screen_x = 1280;
   int conf_screen_y = 800;
+
+// brush hover height (0 = highest, 180 = lowest)
+  int brush_hover_height = 100;

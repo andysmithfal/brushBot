@@ -1,6 +1,10 @@
 void penDip(int pot){
   int xoffset = (50*pot)-50;
-  //to the pot
+  //pen fully up
+  addToBuffer("G4 P1 \r");
+  addToBuffer("M280 P0 S0\r");
+  addToBuffer("G4 P250\r");
+  //go to the pot
   addToBuffer("G1 X"+xoffset+" Y95\r");
   //down
   addToBuffer("G4 P1 \r");
@@ -122,14 +126,10 @@ void xyInput(){
     if(real_z_pos > 180) real_z_pos = 180;
     println(str(pressure)+"  >>  "+str(real_z_pos));
   } else {
-    real_z_pos = 120; 
+    real_z_pos = brush_hover_height; 
   }
   
-//  if(floating){
-//    real_z_pos = 120;  
-//  } else {
-//    real_z_pos = 180;
-//  }
+
   
   
   lastX = int(real_x_pos);
