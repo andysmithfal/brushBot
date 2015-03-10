@@ -19,5 +19,8 @@ void keyPressed() {
    case 'w': 
     penDip(6);
     break; 
+   case ' ': 
+    emergencyStop();
+    break; 
   }
 }

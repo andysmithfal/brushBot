@@ -9,7 +9,7 @@ void mouseDragged() {
  
 void mouseReleased() {
   if(!conf_run_offline && !changingTool){
-    addToBuffer("M280 P0 S100\r");
+    //addToBuffer("M280 P0 S100\r");
   } 
 }
 

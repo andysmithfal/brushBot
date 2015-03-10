@@ -23,7 +23,7 @@ import processing.serial.*;
 Serial ramps;  // Create object from Serial class
 int val;        // Data received from the serial port
 
-int feedrate = 40000;
+int feedrate = 37000;
 
 int x_min_val = 40;
 int x_max_val = 220;
@@ -36,7 +36,7 @@ int pixelGrid_y = 10;
 int pixelGrid_size = 750;
 
 int lastTX = 0;
-int lastX = 0; 
+int lastX = 0;
 int lastY = 0;
 int currentTool = 0;
 int currentPaint = 1;
@@ -45,7 +45,7 @@ boolean inGrid = false;
 boolean allowMove = false;
 boolean allowRecord = false;
 boolean floating = true;
-boolean changingTool = false; 
+boolean changingTool = false;
 
 ArrayList<String> gcodebuffer = new ArrayList<String>();
 boolean serial_wait = false;
@@ -235,9 +235,20 @@ void setup(){
    .setSize(50,20)
    .setCaptionLabel("WASH")
    ;
+   
+   //column 4
+   cp5.addButton("emergency")
+   .setValue(0)
+   .setPosition(990,(1*50)-40)
+   .setSize(100,100)
+   .setCaptionLabel("            EMERGENCY\n                 STOP")
+   .setColorForeground(0xffaa0000)
+   .setColorBackground(0xffff0000)
+   .setColorActive(0xff660000)
+   ;
 
    cp5.addTextfield("manualSerialCmd")
-   .setPosition(780,700)
+   .setPosition(780,450)
    .setSize(200,40)
    .setFont(font_fs)
    .setAutoClear(false)
@@ -261,5 +272,6 @@ void draw() {
   displayStatus(780, 600);
 }
 
-
- 
+void stop() {
+ //TODO: code run on exit - drop tool, stop recording etc 
+}

@@ -3,7 +3,7 @@ void penDip(int pot){
   //pen fully up
   addToBuffer("G4 P1 \r");
   addToBuffer("M280 P0 S0\r");
-  addToBuffer("G4 P250\r");
+  addToBuffer("G4 P500\r");
   //go to the pot
   addToBuffer("G1 X"+xoffset+" Y95\r");
   //down
@@ -30,14 +30,50 @@ void penDip(int pot){
            
 void switchTool(int tool){
    if(currentTool == 0){
-     changeTool(tool,true);
+     changeToolG4(tool,true);
      currentTool = tool;
    } else {
-     changeTool(currentTool,false);
-     changeTool(tool,true);
+     changeToolG4(currentTool,false);
+     changeToolG4(tool,true);
      currentTool = tool;
    } 
 }
+
+void changeToolG4(int tool, boolean direction){
+  //allowMove = false;
+  int x_offset = 50+(tool*35); 
+  
+  int speed = 4000;
+  addToBuffer("G1 X0 Y40 \r");
+  addToBuffer("G1 X"+x_offset+" Y40\r");
+  if(direction == true){
+    //pick up tool
+    addToBuffer("G4 P1 \r");
+    addToBuffer("M280 P0 S180 \r");
+    addToBuffer("G4 P"+(250+350*tool)+" \r");
+    
+    addToBuffer("G4 P1 \r");
+    addToBuffer("G1 X"+x_offset+" Y7 F"+speed+" \r");
+    addToBuffer("G4 P"+(900*tool)+" \r");
+    addToBuffer("G4 P1 \r");
+    addToBuffer("M280 P0 S0 \r");
+  } else {
+    //put down tool
+    addToBuffer("G4 P1 \r");
+    addToBuffer("M280 P0 S0 \r");
+    addToBuffer("G4 P"+(250+350*tool)+" \r");
+    addToBuffer("G4 P1 \r");
+    addToBuffer("G1 X"+x_offset+" Y7  F"+speed+" \r");
+    addToBuffer("G4 P"+(900*tool)+" \r");    
+    addToBuffer("G4 P1 \r");
+    addToBuffer("M280 P0 S180 \r");
+  }
+  addToBuffer("G4 P"+(1000+750+(350*tool))+" \r");
+  addToBuffer("G1 X"+x_offset+" Y40 \r");
+  addToBuffer("G1 X"+x_min_val+" Y"+y_min_val+" F"+feedrate+"\r");
+  //addToBuffer("D"+(750+(350*tool)));
+
+} 
 
 void changeTool(int tool, boolean direction){
   int x_offset = 10+(tool*35);
@@ -77,7 +113,7 @@ void xyInput(){
    
 
   //ignore mouse move events in quick succession
-  if(millis() < lastTX+50){
+  if(millis() < lastTX+40){
     //println("Skipping");
     return;
   }
