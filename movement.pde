@@ -2,7 +2,7 @@ void penDip(int pot){
   int xoffset = (50*pot)-50;
   //pen fully up
   addToBuffer("G4 P1 \r");
-  addToBuffer("M280 P0 S0\r");
+  addToBuffer("M280 P0 S10\r");
   addToBuffer("G4 P500\r");
   //go to the pot
   addToBuffer("G1 X"+xoffset+" Y95\r");
@@ -22,7 +22,7 @@ void penDip(int pot){
   //addToBuffer("G1 X"+xoffset+" Y115 F500\r");
   //up all the way
   addToBuffer("G4 P1 \r");
-  addToBuffer("M280 P0 S0\r");
+  addToBuffer("M280 P0 S10\r");
   addToBuffer("G4 P750\r"); 
   //finish 
   addToBuffer("G1 X"+xoffset+" Y120 F40000\r"); 
@@ -148,9 +148,9 @@ void xyInput(){
 //   
   if(mousePressed){
     float pressure = tablet.getPressure();
-    real_z_pos = 80;
+    real_z_pos = brush_hover_height;
     if (pressure > 0.1){
-       real_z_pos = real_z_pos + (pressure * 90);
+       real_z_pos = real_z_pos + (pressure * (180-brush_hover_height));
          if(inGrid){
             //draw to screen
             noSmooth();
