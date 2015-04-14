@@ -19,7 +19,7 @@ public void Stop(int theValue) {
 }
 
 public void Clear(int theValue) {
-  if(frameCount >1 && !conf_run_offline){
+  if(frameCount >1){
     initWorkArea();
   }
 }
@@ -27,6 +27,18 @@ public void Clear(int theValue) {
 public void record(int theValue) {
   if(frameCount >1 && !conf_run_offline){
     startRecording();
+  }
+}
+
+public void Record2(int theValue) {
+  if(frameCount >1){
+    startRecording2();
+  }
+}
+
+public void RecordStop2(int theValue) {
+  if(frameCount >1){
+    stopRecording2();
   }
 }
 
@@ -155,6 +167,13 @@ public void Replay(int theValue) {
     selectInput("Select a file to replay:", "replayFile");
   }
 }
+
+public void Preview2(int theValue) {
+  if(frameCount >1){
+    selectInput("Select a file to preview:", "previewFile");
+  }
+}
+
 
 public void manualSerialCmd(String theText) {
   // automatically receives results from controller input

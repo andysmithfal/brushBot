@@ -19,7 +19,7 @@ void blockingDelay(int ms){
   catch(Exception e){}
 }
 
-
+//deprecated
 void setFloating(){
   floating = !floating;
   String label = floating ? "Floating" : "Drawing";

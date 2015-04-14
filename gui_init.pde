@@ -1,92 +1,9 @@
-// brushBot 
-// 2015 Dave Turtle / Andy Smith
-// Falmouth University
-
-// ensure you have a config file with essential settings:   
-// rename config.pde.example to config.pde
-
-import controlP5.*;
-ControlP5 cp5;
-DropdownList toolDropdown;
-
-import codeanticode.tablet.*;
-
-Tablet tablet;
-
-float penPressure = 0;
-
-PrintWriter recording;
-PrintWriter jsonrecording;
-
-import processing.serial.*;
-
-Serial ramps;  // Create object from Serial class
-int val;        // Data received from the serial port
-
-int feedrate = 30000;
-
-int x_min_val = 40;
-int x_max_val = 220;
-int y_min_val = 125;
-int y_max_val = 305;
-
-
-int pixelGrid_x = 10;
-int pixelGrid_y = 10;
-int pixelGrid_size = 750;
-
-int lastTX = 0;
-int lastX = 0;
-int lastY = 0;
-int currentTool = 0;
-int currentPaint = 1;
-
-boolean inGrid = false;
-boolean allowMove = false;
-boolean allowRecord = false;
-boolean floating = true;
-boolean changingTool = false;
-
-ArrayList<String> gcodebuffer = new ArrayList<String>();
-boolean serial_wait = false;
-
-float real_z_pos;
-color onColor = color(204, 153, 0);
-
-
-void setup(){
-  
-    //frameRate(40);
-  
-  
-  size(conf_screen_x, conf_screen_y);
-  
-  //define gfx tablet object
-    tablet = new Tablet(this); 
-  
-  //connect to serial and init machine
-  if(!conf_run_offline){
-    ramps = new Serial(this, findSerial(ramps.list()), 115200);
-    ramps.bufferUntil(10); 
-    //put in a delay to let the marlin software reset
-    blockingDelay(2000);
-    //send g code to init
-      
-    addToBuffer("M280 P0 S10 \r"); //set z-axis to 0 degrees (pen up)
-    addToBuffer("G28 X0 Y0 \r");  //home machine
-    addToBuffer("G21 \r"); //set units to mm
-    addToBuffer("G90 \r"); //absolute positioning
-    addToBuffer("G1 X0 Y0 F"+str(feedrate)+"\r"); //set feedrate
-    addToBuffer("G1 X0 Y25 \r"); //set feedrate
-  }  
-
-  //init the gui  
+void initGUI(){
+  cp5 = new ControlP5(this);
   //fonts 
-  //String[] fontList = PFont.list();
-  //println(fontList);
   PFont font = createFont("arial",20);
   PFont font_fs = createFont("Courier-Bold",20,false);
-  cp5 = new ControlP5(this);
+  
   textFont(font);
      
   //define buttons
@@ -140,6 +57,20 @@ void setup(){
    .setPosition(780,(8*50)-40)
    .setSize(50,20)
    .setCaptionLabel("Replay")
+   ;
+   
+   cp5.addButton("Record2")
+   .setValue(0)
+   .setPosition(780,(9*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Record 2")
+   ;
+   
+   cp5.addButton("RecordStop2")
+   .setValue(0)
+   .setPosition(780,(10*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Stop 2")
    ;
    
    //column 2
@@ -246,32 +177,31 @@ void setup(){
    .setColorBackground(0xffff0000)
    .setColorActive(0xff660000)
    ;
+   
+   cp5.addButton("Preview2")
+   .setValue(0)
+   .setPosition(990,(4*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Preview 2")
+   ;
+   
 
    cp5.addTextfield("manualSerialCmd")
-   .setPosition(780,450)
+   .setPosition(780,500)
    .setSize(200,40)
    .setFont(font_fs)
    .setAutoClear(false)
    ;
-  
-  initWorkArea();
-}
+   
+   consoleTextArea = cp5.addTextarea("txt")
+                  .setPosition(780, 600)
+                  .setSize(450, 100)
+                  .setFont(createFont("", 10))
+                  .setLineHeight(14)
+                  .setColor(color(255,255,255))
+                  .setColorBackground(color(0, 100))
+                  .setColorForeground(color(255, 100));
+  ;
 
-void draw() {
-  
-  //println(frameRate);
-  //TODO: try this -
-   // Instead of mousePressed, one can use the Tablet.isMovement() method, which
-  // returns true when changes not only in position but also in pressure or tilt
-  // are detected in the tablet. 
-  noStroke();
-  fill(0xed,0xa2,0x23);
-  rect(770,0,(conf_screen_x-770),conf_screen_y);
-  
-  processBuffer();
-  displayStatus(780, 600);
-}
-
-void stop() {
- //TODO: code run on exit - drop tool, stop recording etc 
+  console = cp5.addConsole(consoleTextArea);
 }

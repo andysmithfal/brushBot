@@ -4,3 +4,5 @@
 config.pde
 
 recordings/*.gcode
+
+recordings2/*.json
