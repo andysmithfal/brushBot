@@ -35,7 +35,7 @@ import processing.serial.*;
 Serial ramps;  // Create object from Serial class
 int val;        // Data received from the serial port
 
-int feedrate = 30000;
+int feedrate = 28000;
 
 int x_min_val = 40;
 int x_max_val = 220;

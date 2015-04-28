@@ -37,7 +37,7 @@ void penDip(int pot){
 }
            
 void switchTool(int tool){
-  if(true) return;
+  //if(true) return;
    if(currentTool == 0){
      changeToolG4(tool,true);
      currentTool = tool;
@@ -50,65 +50,38 @@ void switchTool(int tool){
 
 void changeToolG4(int tool, boolean direction){
   //allowMove = false;
-  int x_offset = 50+(tool*35); 
+  int x_offset = 45+(tool*35); 
+  float x_offset_f = 45+(tool*34.8);
   
   int speed = 4000;
   addToBuffer("G1 X0 Y40 \r");
-  addToBuffer("G1 X"+x_offset+" Y40\r");
+  addToBuffer("G1 X"+nf(x_offset_f,3,2)+" Y40\r");
   if(direction == true){
     //pick up tool
     addToBuffer("G4 P1 \r");
-    addToBuffer("M280 P0 S180 \r");
+    addToBuffer("M280 P0 S135 \r");
     addToBuffer("G4 P"+(250+350*tool)+" \r");
     
     addToBuffer("G4 P1 \r");
-    addToBuffer("G1 X"+x_offset+" Y7 F"+speed+" \r");
+    addToBuffer("G1 X"+nf(x_offset_f,3,2)+" Y5 F"+speed+" \r");
     addToBuffer("G4 P"+(900*tool)+" \r");
     addToBuffer("G4 P1 \r");
-    addToBuffer("M280 P0 S0 \r");
+    addToBuffer("M280 P0 S10 \r");
   } else {
     //put down tool
     addToBuffer("G4 P1 \r");
-    addToBuffer("M280 P0 S0 \r");
+    addToBuffer("M280 P0 S10 \r");
     addToBuffer("G4 P"+(250+350*tool)+" \r");
     addToBuffer("G4 P1 \r");
-    addToBuffer("G1 X"+x_offset+" Y7  F"+speed+" \r");
+    addToBuffer("G1 X"+nf(x_offset_f,3,2)+" Y5  F"+speed+" \r");
     addToBuffer("G4 P"+(900*tool)+" \r");    
     addToBuffer("G4 P1 \r");
-    addToBuffer("M280 P0 S180 \r");
+    addToBuffer("M280 P0 S135 \r");
   }
   addToBuffer("G4 P"+(1000+750+(350*tool))+" \r");
-  addToBuffer("G1 X"+x_offset+" Y40 \r");
+  addToBuffer("G1 X"+nf(x_offset_f,3,2)+" Y40 \r");
   addToBuffer("G1 X"+x_min_val+" Y"+y_min_val+" F"+feedrate+"\r");
   //addToBuffer("D"+(750+(350*tool)));
-
-} 
-
-void changeTool(int tool, boolean direction){
-  int x_offset = 10+(tool*35);
-  
-  int speed = 4000;
-  addToBuffer("G1 X0 Y40 \r");
-  addToBuffer("G1 X"+x_offset+" Y40\r");
-  if(direction == true){
-    //pick up tool
-    addToBuffer("M280 P0 S165 \r");
-    addToBuffer("D"+(250+350*tool));
-    addToBuffer("G1 X"+x_offset+" Y9 F"+speed+" \r");
-    addToBuffer("D"+(900*tool));
-    addToBuffer("M280 P0 S0 \r");
-  } else {
-    //put down tool
-    addToBuffer("M280 P0 S0 \r");
-    addToBuffer("D"+(250+(350*tool)));
-    addToBuffer("G1 X"+x_offset+" Y9  F"+speed+" \r");
-    addToBuffer("D"+(900*tool));
-    addToBuffer("M280 P0 S170 \r");    
-  }
-  addToBuffer("D"+(750+(350*tool)));
-  addToBuffer("G1 X"+x_offset+" Y40 \r");
-  addToBuffer("G1 X"+x_min_val+" Y"+y_min_val+" F"+feedrate+"\r");
-  addToBuffer("D"+(750+(350*tool)));
 
 } 
 
@@ -125,7 +98,7 @@ void xyInput(){
    
 
   //ignore mouse move events in quick succession
-  if(millis() < lastTX+20){
+  if(millis() < lastTX+30){
     //println("Skipping");
     return;
   }
@@ -161,6 +134,8 @@ void xyInput(){
   float pressure = tablet.getPressure();
   if(mousePressed && pressure == 0) pressure = 1.0;
   
+
+  
   real_z_pos = brush_hover_height;
   if (pressure > 0.1){
      real_z_pos = real_z_pos + (pressure * (180-brush_hover_height));
@@ -170,6 +145,7 @@ void xyInput(){
           noStroke();
           fill(0,0,0);
           ellipse(mouseX,mouseY,int(pressure*10),int(pressure*10));
+          //println(pressure+" > "+real_z_pos);
         }
     if(real_z_pos > 180) real_z_pos = 180;    
       moveZ(real_z_pos);
@@ -202,6 +178,8 @@ void xyInput(){
   lastY = int(real_y_pos);
   lastTX = millis();
   moveXY(real_x_pos,real_y_pos);
+  //debug
+  //println("X: "+penX+" Y: "+penY+" P: "+pressure);
   if(pressure > 0 && inGrid){
     record2xy(penX, penY);
     record2z(pressure);

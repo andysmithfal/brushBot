@@ -58,7 +58,7 @@ public void end(int theValue) {
 public void drop_tool(int theValue) {
   if(frameCount >1 && !conf_run_offline){
 
-    changeTool(currentTool,false);
+    changeToolG4(currentTool,false);
     currentTool = 0;
     
   }
