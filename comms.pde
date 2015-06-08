@@ -1,7 +1,15 @@
 void serialEvent(Serial p) { 
-  String inString = p.readString(); 
-  String[] test = match(inString,"ok");
-  if(test != null) serial_wait = false;
+  String inString = p.readString();
+ if(p == ramps){ 
+   //buffer ok
+   String[] test = match(inString,"ok");
+   if(test != null) serial_wait = false;
+ }else{
+   //bluetooth
+   String ina[] = split(inString, "\r");
+   btint = Integer.parseInt(ina[0]);
+   //probably want to look for changes here and move the Z axis directly
+ }
 } 
 
 void processBuffer(){
@@ -45,4 +53,11 @@ void emergencyStop(){
   allowRecord = false;
   ramps.write("M112\r\n");
   ramps.stop();
+}
+
+void connectBluetooth(){
+  bluetooth = new Serial(this, "/dev/tty.HC-06-DevB", 9600);
+  bluetooth.bufferUntil(10);
+  conf_use_bt_controller = true;
+  println("Bluetooth controller connected");
 }

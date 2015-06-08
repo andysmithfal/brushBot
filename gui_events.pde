@@ -174,6 +174,11 @@ public void Preview2(int theValue) {
   }
 }
 
+public void cBT(int theValue) {
+  if(frameCount >1){
+    connectBluetooth();
+  }
+}
 
 public void manualSerialCmd(String theText) {
   // automatically receives results from controller input

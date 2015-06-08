@@ -6,3 +6,7 @@ config.pde
 recordings/*.gcode
 
 recordings2/*.json
+
+*.sublime-project
+
+*.sublime-workspace

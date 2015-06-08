@@ -37,7 +37,6 @@ void penDip(int pot){
 }
            
 void switchTool(int tool){
-  //if(true) return;
    if(currentTool == 0){
      changeToolG4(tool,true);
      currentTool = tool;
@@ -49,7 +48,6 @@ void switchTool(int tool){
 }
 
 void changeToolG4(int tool, boolean direction){
-  //allowMove = false;
   int x_offset = 45+(tool*35); 
   float x_offset_f = 45+(tool*34.8);
   
@@ -85,7 +83,7 @@ void changeToolG4(int tool, boolean direction){
 
 } 
 
-void xyInput(){
+void xyzInput(){
   float penX = tablet.getPenX();
   float penY = tablet.getPenY();
 
@@ -95,39 +93,21 @@ void xyInput(){
    }else{
      inGrid = false;
    }  
-   
-
-  //ignore mouse move events in quick succession
-  if(millis() < lastTX+30){
-    //println("Skipping");
-    return;
-  }
-   
-  //calaculate the mouse pixel position 0 - pixelGrid_size in x and y
   
-  //int mouse_x_pos = mouseX - pixelGrid_x;
-  //int mouse_y_pos = pixelGrid_size - (mouseY - pixelGrid_y);
-
+  //do nothing if we're not in the grid
+  if(!inGrid) return;
+  //do nothing if we're not allowing movement 
+  if(!allowMove) return;  
+  //ignore mouse move events in quick succession
+  if(millis() < lastTX+30) return;
+   
+  //remove the border offset from the mouse position and flip
+  //the Y axis (gcode datum is bottom-left)
   float mouse_x_pos = penX - pixelGrid_x;
   float mouse_y_pos = pixelGrid_size - (penY - pixelGrid_y);
-  
-  
 
-  //using the mm extents of the working area gained from the text box values
-  //work out the real worl position of the mouse pointer
-  
-  float x_length = x_max_val - x_min_val;
-  
-  float y_length = y_max_val - y_min_val;
-  
-  
-  //to convert pixel position to real world value
-  
-  float x_pix_val = x_length / pixelGrid_size;
-  float y_pix_val = y_length / pixelGrid_size;
-    
-  float real_x_pos = (mouse_x_pos * x_pix_val) + x_min_val;
-  float real_y_pos = (mouse_y_pos * y_pix_val) + y_min_val;
+  //skip duplicate gcode
+  //if(int(mouse_x_pos) == lastX && int(mouse_y_pos) == lastY) return;
 
   //calc z 
   
@@ -139,14 +119,11 @@ void xyInput(){
   real_z_pos = brush_hover_height;
   if (pressure > 0.1){
      real_z_pos = real_z_pos + (pressure * (180-brush_hover_height));
-       if(inGrid){
           //draw to screen
           noSmooth();
           noStroke();
           fill(0,0,0);
           ellipse(mouseX,mouseY,int(pressure*10),int(pressure*10));
-          //println(pressure+" > "+real_z_pos);
-        }
     if(real_z_pos > 180) real_z_pos = 180;    
       moveZ(real_z_pos);
       lastZ = int(real_z_pos);
@@ -162,47 +139,49 @@ void xyInput(){
   //println(str(pressure)+"  >>  "+str(real_z_pos));
   
   
-  //skip duplicate gcode
-  //if(int(real_x_pos) == lastX && int(real_y_pos) == lastY) return;
-
-//  print(real_x_pos);
-//  print("    ");
-//  println(real_y_pos);
-//   
 
   
-
-  
-  
-  lastX = int(real_x_pos);
-  lastY = int(real_y_pos);
+  lastX = int(mouse_x_pos);
+  lastY = int(mouse_y_pos);
   lastTX = millis();
-  moveXY(real_x_pos,real_y_pos);
-  //debug
-  //println("X: "+penX+" Y: "+penY+" P: "+pressure);
-  if(pressure > 0 && inGrid){
+
+  moveXY(mouse_x_pos, mouse_y_pos, x_min_val, x_max_val, y_min_val, y_max_val);
+
+  if(pressure > 0){
     record2xy(penX, penY);
     record2z(pressure);
   }
 }
 
-void moveXY(float x, float y){
+void moveXY(float x, float y, int x_min_val, int x_max_val, int y_min_val, int y_max_val){
   if(conf_run_offline) return; //do nothing if we're running offline
-   if (allowMove == true && inGrid == true){   
-    addToBuffer("G1 X" + nf(x,3,2) + " Y" + nf(y,3,2) + "\r");
 
-   }
+  //using the mm extents of the working area 
+  //work out the real worl position of the mouse pointer
+
+  float x_length = x_max_val - x_min_val;
+  float y_length = y_max_val - y_min_val;
+
+  //to convert pixel position to real world value
+
+  float x_pix_val = x_length / pixelGrid_size;
+  float y_pix_val = y_length / pixelGrid_size;
+
+  float real_x_pos = (x * x_pix_val) + x_min_val;
+  float real_y_pos = (y * y_pix_val) + y_min_val;
+
+  addToBuffer("G1 X" + nf(real_x_pos,3,2) + " Y" + nf(real_y_pos,3,2) + "\r");
 }
 
 void moveZ(float z){
   if(conf_run_offline) return; //do nothing if we're running offline
-   if (allowMove == true && inGrid == true){   
+   if (allowMove == true){   
     addToBuffer("M280 P0 S" + nf(z,3,2) +"\r");
 
    }
 }
 
-
+// not sure why this is here, don't think it's used
 void moveMachine(float x, float y, float z){
   if(conf_run_offline) return; //do nothing if we're running offline
    if (allowMove == true && inGrid == true){   

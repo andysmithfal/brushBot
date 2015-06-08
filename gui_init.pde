@@ -185,6 +185,13 @@ void initGUI(){
    .setCaptionLabel("Preview 2")
    ;
    
+   cp5.addButton("cBT")
+   .setValue(0)
+   .setPosition(990,(5*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Bluetooth")
+   ;
+   
 
    cp5.addTextfield("manualSerialCmd")
    .setPosition(780,500)

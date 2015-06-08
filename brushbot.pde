@@ -33,7 +33,12 @@ float lastRec2Z;
 //serial
 import processing.serial.*;
 Serial ramps;  // Create object from Serial class
-int val;        // Data received from the serial port
+int val;        // Data received from the serial port 
+
+//bluetooth
+boolean conf_use_bt_controller = false;
+Serial bluetooth;
+int btint=0;
 
 int feedrate = 28000;
 
@@ -97,7 +102,7 @@ void draw() {
   rect(770,0,(conf_screen_x-770),conf_screen_y);
   
   if( tablet.isMovement() ){
-    xyInput();
+    xyzInput();
   }
   processBuffer();
   displayStatus(990, 500);

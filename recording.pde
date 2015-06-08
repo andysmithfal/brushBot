@@ -104,7 +104,7 @@ void record2dwell(int dwell){
   record2index++;
 }
 
-void previewFile(File selection){
+void loadRec2File(File selection){
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
   } else {
@@ -149,6 +149,52 @@ void previewFile(File selection){
      
   }  
 }
+
+void previewFile(File selection){
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("Opening " + selection.getAbsolutePath());
+    json = loadJSONObject(selection.getAbsolutePath());
+    JSONArray loadedRecording = json.getJSONArray("brushbot-recording");
+    println("Loaded!");
+    println("Found " + loadedRecording.size() + " entries.");
+    
+    int currentSize = 100;
+    for(int i = 0; i < loadedRecording.size(); i++){
+      JSONObject event = loadedRecording.getJSONObject(i);
+      String eventType = event.getString("event");
+      if(eventType.equals("zmove")){
+        currentSize = int(event.getFloat("z"));
+      }
+      if(eventType.equals("xymove")){
+        int x = int(event.getFloat("x"));
+        int y = int(event.getFloat("y"));
+        
+        float mouse_x_pos = tablet.getPenX() - pixelGrid_x;
+        float mouse_y_pos = pixelGrid_size - (tablet.getPenY() - pixelGrid_y);
+        
+        float x_length = x_max_val - x_min_val;
+        float y_length = y_max_val - y_min_val;
+        float x_pix_val = x_length / pixelGrid_size;
+        float y_pix_val = y_length / pixelGrid_size;      
+        float x_screen = (x+pixelGrid_x / x_pix_val) - x_min_val;
+        float y_screen = ((y+pixelGrid_y) / y_pix_val) - y_min_val;
+        
+        println(x + " " + y + " > > " + int(x_screen) + " " + int(y_screen));
+        //draw to screen
+          noSmooth();
+          noStroke();
+          fill(0,0,0);
+          ellipse(int(x_screen),int(y_screen),5,5);
+          
+      }      
+      //println(eventType);
+    }
+     
+  }  
+}
+
 
 
 void replayFile(File selection) {
