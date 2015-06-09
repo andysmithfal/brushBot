@@ -185,9 +185,17 @@ void initGUI(){
    .setCaptionLabel("Preview 2")
    ;
    
-   cp5.addButton("cBT")
+   cp5.addButton("Replay2")
    .setValue(0)
    .setPosition(990,(5*50)-40)
+   .setSize(50,20)
+   .setCaptionLabel("Replay 2")
+   ;
+     
+   
+   cp5.addButton("cBT")
+   .setValue(0)
+   .setPosition(990,(6*50)-40)
    .setSize(50,20)
    .setCaptionLabel("Bluetooth")
    ;

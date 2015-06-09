@@ -27,13 +27,7 @@ void penDip(int pot){
   //finish 
   addToBuffer("G1 X"+xoffset+" Y120 F"+feedrate+"\r"); 
   
-  if(allowRecord2){
-      JSONObject event = new JSONObject();
-      event.setString("event", "pendip");
-      event.setFloat("pot", pot);
-      recording2.setJSONObject(record2index, event);
-      record2index++;
-    }
+  record2paint(pot);
 }
            
 void switchTool(int tool){
@@ -114,7 +108,6 @@ void xyzInput(){
   float pressure = tablet.getPressure();
   if(mousePressed && pressure == 0) pressure = 1.0;
   
-
   
   real_z_pos = brush_hover_height;
   if (pressure > 0.1){
@@ -124,13 +117,15 @@ void xyzInput(){
           noStroke();
           fill(0,0,0);
           ellipse(mouseX,mouseY,int(pressure*10),int(pressure*10));
-    if(real_z_pos > 180) real_z_pos = 180;    
+    if(real_z_pos > 180) real_z_pos = 180;  
+      record2z(real_z_pos);  
       moveZ(real_z_pos);
       lastZ = int(real_z_pos);
   } else {
    if(lastZ == brush_hover_height){
     //do nothing 
    } else {
+    record2z(float(brush_hover_height));
     moveZ(brush_hover_height);
     lastZ = brush_hover_height;
    } 
@@ -148,8 +143,8 @@ void xyzInput(){
   moveXY(mouse_x_pos, mouse_y_pos, x_min_val, x_max_val, y_min_val, y_max_val);
 
   if(pressure > 0){
-    record2xy(penX, penY);
-    record2z(pressure);
+    record2xy(mouse_x_pos, mouse_y_pos);
+    //record2z(pressure);
   }
 }
 

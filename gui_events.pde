@@ -174,6 +174,12 @@ public void Preview2(int theValue) {
   }
 }
 
+public void Replay2(int theValue) {
+  if(frameCount >1){
+    selectInput("Select a file to replay:", "replayRec2File");
+  }
+}
+
 public void cBT(int theValue) {
   if(frameCount >1){
     connectBluetooth();

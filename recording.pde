@@ -89,6 +89,16 @@ void record2z(Float z){
   }  
 }
 
+void record2paint(int pot){
+ if(allowRecord2){
+    JSONObject event = new JSONObject();
+    event.setString("event", "paint");
+    event.setInt("pot", pot);
+    recording2.setJSONObject(record2index, event);
+    record2index++;
+  }  
+}
+
 void record2event(String ev){
   JSONObject event = new JSONObject();
   event.setString("event", ev);
@@ -144,6 +154,44 @@ void loadRec2File(File selection){
           ellipse(int(x_screen),int(y_screen),5,5);
           
       }      
+      //println(eventType);
+    }
+     
+  }  
+}
+
+void replayRec2File(File selection){
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("Opening " + selection.getAbsolutePath());
+    //addFileToBuffer(selection.getAbsolutePath());  
+    json = loadJSONObject(selection.getAbsolutePath());
+    JSONArray loadedRecording = json.getJSONArray("brushbot-recording");
+    println("Loaded!");
+    println("Found " + loadedRecording.size() + " entries.");
+    
+    for(int i = 0; i < loadedRecording.size(); i++){
+      JSONObject event = loadedRecording.getJSONObject(i);
+      String eventType = event.getString("event");
+      if(eventType.equals("zmove")){
+        float z = event.getFloat("z");
+        moveZ(z);        
+      }
+      if(eventType.equals("xymove")){
+        float x = event.getFloat("x");
+        float y = event.getFloat("y");
+        
+        moveXY(x, y, x_min_val, x_max_val, y_min_val, y_max_val);
+          
+      }    
+      if(eventType.equals("paint")){
+        int pot = event.getInt("pot");
+        
+        penDip(pot);
+        addToBuffer("G4 P100 \r");
+          
+      }    
       //println(eventType);
     }
      
