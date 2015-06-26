@@ -1,5 +1,6 @@
 String findSerial(String[] ports){
   String port = "no port!";
+  ports = reverse(ports);
   for(String thisPort : ports){
     String[] m = match(thisPort.toLowerCase(), "usb");
     String[] c = match(thisPort.toLowerCase(), "com([0-9]{1,2})");
