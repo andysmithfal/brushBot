@@ -8,71 +8,50 @@ void initGUI(){
      
   //define buttons
   //column 1
-   cp5.addButton("record")
+   cp5.addButton("Start")
    .setValue(0)
    .setPosition(780,(1*50)-40)
    .setSize(50,20)
    ;
    
-   cp5.addButton("end")
+   cp5.addButton("Stop")
    .setValue(0)
    .setPosition(780,(2*50)-40)
    .setSize(50,20)
-   ;
-   
-   cp5.addButton("Home")
+   ;  
+  
+   cp5.addButton("record")
    .setValue(0)
    .setPosition(780,(3*50)-40)
    .setSize(50,20)
    ;
    
-   cp5.addButton("Start")
+   cp5.addButton("end")
    .setValue(0)
    .setPosition(780,(4*50)-40)
    .setSize(50,20)
    ;
    
-   cp5.addButton("Stop")
+   cp5.addButton("Replay")
    .setValue(0)
    .setPosition(780,(5*50)-40)
    .setSize(50,20)
+   .setCaptionLabel("Replay")
    ;
    
-   cp5.addButton("Drawing")
+   cp5.addButton("Home")
    .setValue(0)
    .setPosition(780,(6*50)-40)
    .setSize(50,20)
-   .setCaptionLabel("Floating")
    ;
-   
+     
    cp5.addButton("Clear")
    .setValue(0)
    .setPosition(780,(7*50)-40)
    .setSize(50,20)
    .setCaptionLabel("CLEAR SCR")
    ;
-   
-   cp5.addButton("Replay")
-   .setValue(0)
-   .setPosition(780,(8*50)-40)
-   .setSize(50,20)
-   .setCaptionLabel("Replay")
-   ;
-   
-   cp5.addButton("Record2")
-   .setValue(0)
-   .setPosition(780,(9*50)-40)
-   .setSize(50,20)
-   .setCaptionLabel("Record 2")
-   ;
-   
-   cp5.addButton("RecordStop2")
-   .setValue(0)
-   .setPosition(780,(10*50)-40)
-   .setSize(50,20)
-   .setCaptionLabel("Stop 2")
-   ;
-   
+
    //column 2
    cp5.addButton("tool_1")
    .setValue(0)
@@ -185,17 +164,10 @@ void initGUI(){
    .setCaptionLabel("Preview 2")
    ;
    
-   cp5.addButton("Replay2")
-   .setValue(0)
-   .setPosition(990,(5*50)-40)
-   .setSize(50,20)
-   .setCaptionLabel("Replay 2")
-   ;
-     
    
    cp5.addButton("cBT")
    .setValue(0)
-   .setPosition(990,(6*50)-40)
+   .setPosition(990,(5*50)-40)
    .setSize(50,20)
    .setCaptionLabel("Bluetooth")
    ;

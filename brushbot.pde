@@ -40,7 +40,7 @@ boolean conf_use_bt_controller = false;
 Serial bluetooth;
 int btint=0;
 
-int feedrate = 28000;
+int feedrate = 25000;
 
 int x_min_val = 40;
 int x_max_val = 220;
@@ -84,8 +84,8 @@ void setup(){
     //put in a delay to let the marlin software reset
     blockingDelay(2000);
     //send g code to init
-    addToBuffer("M280 P0 S10 \r"); //set z-axis to 10 degrees (pen up)
-    addToBuffer("G28 X0 Y0 \r");  //home machine
+    //addToBuffer("M280 P0 S10 \r"); //set z-axis to 10 degrees (pen up)
+    addToBuffer("G28 X0 Y0 Z0 \r");  //home machine
     addToBuffer("G21 \r"); //set units to mm
     addToBuffer("G90 \r"); //absolute positioning
     addToBuffer("G1 X0 Y0 F"+str(feedrate)+"\r"); //set feedrate

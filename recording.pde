@@ -1,28 +1,3 @@
-void startRecording(){
-  // Create a new file in the sketch directory
-  String str_sec = str(second());
-  String str_min  = str(minute());
-  String str_hr = str(hour());
-  String str_day = str(day());
-  String str_mth = str(month());
-  String str_yr = str(year());
-  
-  String date = str_yr + str_mth + str_day + "_" + str_hr + str_min + str_sec;
-  
-  recording = createWriter("recordings/"+ date + ".gcode"); 
-  
-  allowRecord = true;
-}
-
-
-
-void stopRecording(){
-  allowRecord = false;
-  recording.flush(); // Writes the remaining data to the file
-  recording.close(); // Finishes the file
-}
-
-
 void startRecording2(){
   allowRecord2 = true;
   recording2 = new JSONArray();
@@ -32,7 +7,7 @@ void startRecording2(){
   event.setInt("offset_x", pixelGrid_x);
   event.setInt("offset_y", pixelGrid_y);
   event.setInt("canvas_size", pixelGrid_size);
-  event.setInt("version", 1);
+  event.setInt("version", 2);
   recording2.setJSONObject(record2index, event);
   record2index++;
   //init the recording here with current tool?
@@ -94,6 +69,16 @@ void record2paint(int pot){
     JSONObject event = new JSONObject();
     event.setString("event", "paint");
     event.setInt("pot", pot);
+    recording2.setJSONObject(record2index, event);
+    record2index++;
+  }  
+}
+
+void record2tool(int tool){
+ if(allowRecord2){
+    JSONObject event = new JSONObject();
+    event.setString("event", "toolchange");
+    event.setInt("tool", tool);
     recording2.setJSONObject(record2index, event);
     record2index++;
   }  
@@ -192,7 +177,11 @@ void replayRec2File(File selection){
         addToBuffer("G4 P100 \r");
           
       }    
-      //println(eventType);
+      
+      if(eventType.equals("toolchange")){
+        int tool = event.getInt("tool");
+        switchTool(tool);        
+      }          
     }
      
   }  

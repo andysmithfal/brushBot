@@ -2,7 +2,7 @@
 
 public void Home(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    addToBuffer("G28 X0 Y0 \r");
+    addToBuffer("G28 X0 Y0 Z0 \r");
   }
 } 
 
@@ -26,32 +26,13 @@ public void Clear(int theValue) {
 
 public void record(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    startRecording();
-  }
-}
-
-public void Record2(int theValue) {
-  if(frameCount >1){
     startRecording2();
-  }
-}
-
-public void RecordStop2(int theValue) {
-  if(frameCount >1){
-    stopRecording2();
-  }
-}
-
-public void pause(int theValue) {
-  if(frameCount >1 && !conf_run_offline){
-    //allowRecord = false;
   }
 }
 
 public void end(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    stopRecording();
-    //exit(); // Stops the program
+    stopRecording2();
   }
 }
 
@@ -107,12 +88,6 @@ public void tool_6(int theValue) {
   }
 }
 
-public void Drawing(int theValue) {
-  if(frameCount >1){
-    setFloating();
-  }
-}
-
 public void Paint(int theValue) {
   if(frameCount >1 && !conf_run_offline){
     penDip(currentPaint);
@@ -164,7 +139,7 @@ public void emergency(int theValue) {
 
 public void Replay(int theValue) {
   if(frameCount >1 && !conf_run_offline){
-    selectInput("Select a file to replay:", "replayFile");
+    selectInput("Select a file to replay:", "replayRec2File");
   }
 }
 
@@ -174,11 +149,6 @@ public void Preview2(int theValue) {
   }
 }
 
-public void Replay2(int theValue) {
-  if(frameCount >1){
-    selectInput("Select a file to replay:", "replayRec2File");
-  }
-}
 
 public void cBT(int theValue) {
   if(frameCount >1){
