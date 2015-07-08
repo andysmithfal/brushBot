@@ -167,14 +167,14 @@ void replayRec2File(File selection){
         float x = event.getFloat("x");
         float y = event.getFloat("y");
         
-        moveXY(x, y, x_min_val, x_max_val, y_min_val, y_max_val);
+        moveXY(x, y, x_min_val, x_max_val, y_min_val, y_max_val,playback_feedrate);
           
       }    
       if(eventType.equals("paint")){
         int pot = event.getInt("pot");
         
         penDip(pot);
-        addToBuffer("G4 P100 \r");
+        addToBuffer("G4 P2000 \r");
           
       }    
       

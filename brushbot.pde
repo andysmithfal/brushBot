@@ -41,6 +41,7 @@ Serial bluetooth;
 int btint=0;
 
 int feedrate = 25000;
+int playback_feedrate = 4000;
 
 int x_min_val = 40;
 int x_max_val = 220;

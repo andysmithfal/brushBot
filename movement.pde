@@ -136,7 +136,7 @@ void xyzInput(){
   lastY = int(mouse_y_pos);
   lastTX = millis();
 
-  moveXY(mouse_x_pos, mouse_y_pos, x_min_val, x_max_val, y_min_val, y_max_val);
+  moveXY(mouse_x_pos, mouse_y_pos, x_min_val, x_max_val, y_min_val, y_max_val,feedrate);
 
   if(pressure > 0){
     record2xy(mouse_x_pos, mouse_y_pos);
@@ -177,7 +177,7 @@ void xyzInput(){
 
 }
 
-void moveXY(float x, float y, int x_min_val, int x_max_val, int y_min_val, int y_max_val){
+void moveXY(float x, float y, int x_min_val, int x_max_val, int y_min_val, int y_max_val, int fr){
   if(conf_run_offline) return; //do nothing if we're running offline
 
   //using the mm extents of the working area 
@@ -194,7 +194,7 @@ void moveXY(float x, float y, int x_min_val, int x_max_val, int y_min_val, int y
   float real_x_pos = (x * x_pix_val) + x_min_val;
   float real_y_pos = (y * y_pix_val) + y_min_val;
 
-  addToBuffer("G1 X" + nf(real_x_pos,3,2) + " Y" + nf(real_y_pos,3,2) + "\r");
+  addToBuffer("G1 X" + nf(real_x_pos,3,2) + " Y" + nf(real_y_pos,3,2) + " F"+fr+"\r");
 }
 
 void moveZ(float z){
